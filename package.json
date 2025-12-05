@@ -1,0 +1,27 @@
+{
+  "name": "vulnerable-ctf-app",
+  "version": "1.0.0",
+  "description": "Vulnerable Web Application for Educational Penetration Testing Lab",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "ctf",
+    "vulnerable",
+    "penetration-testing",
+    "educational"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.8",
+    "express-session": "^1.17.3",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Portal - Upload Documents</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: white;
+            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 18px;
+            color: #333 !important;
+        }
+        .nav-link {
+            color: #6c757d !important;
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 24px;
+        }
+        .nav-link:hover {
+            color: #333 !important;
+        }
+        .nav-link.active {
+            color: #333 !important;
+            font-weight: 600;
+        }
+        .user-info {
+            font-size: 14px;
+            color: #6c757d;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+        .main-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .page-header {
+            margin-bottom: 30px;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .page-header p {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0;
+        }
+        .upload-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 6px;
+            padding: 60px 40px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: block;
+            width: 100%;
+        }
+        .upload-area:hover {
+            border-color: #adb5bd;
+            background-color: #f1f3f5;
+        }
+        .upload-area input[type="file"] {
+            display: none;
+        }
+        .upload-area p {
+            color: #6c757d;
+            margin: 0;
+            font-size: 14px;
+        }
+        .upload-area strong {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .btn-upload {
+            width: 100%;
+            height: 40px;
+            background-color: #333;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .btn-upload:hover {
+            background-color: #1a1a1a;
+        }
+        .alert {
+            font-size: 14px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 4px;
+        }
+        .file-info {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        .file-info p {
+            margin: 0 0 8px;
+            font-size: 13px;
+            color: #6c757d;
+        }
+        .file-link {
+            color: #333;
+            font-weight: 600;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        .file-requirements {
+            background-color: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #333;
+        }
+        .file-requirements strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #0066cc;
+        }
+        .file-requirements ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .file-requirements li {
+            margin: 4px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid" style="max-width: 1200px; margin: 0 auto;">
+            <a class="navbar-brand" href="/dashboard">Employee Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/upload">Upload Documents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/change-password">Account Settings</a>
+                    </li>
+                </ul>
+                <div class="user-info">
+                    <%= username %>
+                </div>
+                <a href="/logout" class="nav-link" style="margin-left: 10px;">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1>Upload Documents</h1>
+            <p>Upload work files to your workspace</p>
+        </div>
+
+        <div class="upload-card">
+            <% if (message) { %>
+                <div class="alert alert-<%= message.type === 'success' ? 'success' : 'danger' %>">
+                    <%= message.text %>
+                </div>
+
+                <% if (uploadedFile) { %>
+                    <div class="file-info">
+                        <p><strong>File uploaded:</strong></p>
+                        <a href="<%= uploadedFile.url %>" class="file-link" target="_blank">
+                            <%= uploadedFile.name %>
+                        </a>
+                    </div>
+                <% } %>
+            <% } %>
+
+            <div class="file-requirements">
+                <strong>Accepted File Types:</strong>
+                <ul>
+                    <li><strong>JPEG Images</strong> - .jpg, .jpeg</li>
+                    <li><strong>PNG Images</strong> - .png</li>
+                    <li><strong>PDF Documents</strong> - .pdf</li>
+                </ul>
+            </div>
+
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <label for="file" class="upload-area">
+                    <strong>Click to select a file</strong>
+                    <p>or drag and drop</p>
+                    <input type="file" id="file" name="file" required>
+                </label>
+
+                <button type="submit" class="btn-upload">Upload</button>
+            </form>
+        </div>
+
+        <% if (uploadedFiles && uploadedFiles.length > 0) { %>
+        <div class="upload-card" style="margin-top: 20px;">
+            <h5 style="font-size: 18px; font-weight: 600; color: #333; margin-bottom: 16px;">Uploaded Files</h5>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 14px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #e9ecef;">
+                            <th style="padding: 8px 0; text-align: left; color: #6c757d; font-weight: 500;">File Name</th>
+                            <th style="padding: 8px 0; text-align: right; color: #6c757d; font-weight: 500;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% uploadedFiles.forEach(function(file) { %>
+                        <tr style="border-bottom: 1px solid #f1f3f5;">
+                            <td style="padding: 12px 0; word-break: break-all; color: #333;">
+                                <%= file.name %>
+                            </td>
+                            <td style="padding: 12px 0; text-align: right;">
+                                <a href="<%= file.url %>" target="_blank" style="color: #333; text-decoration: none; font-weight: 500; padding: 6px 12px; background-color: #f8f9fa; border-radius: 4px; font-size: 13px;">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <% } else if (!uploadedFiles) { %>
+        <!-- uploadedFiles undefined, do nothing -->
+        <% } else { %>
+        <div class="upload-card" style="margin-top: 20px;">
+            <p style="color: #6c757d; font-size: 14px; margin: 0; text-align: center;">No files uploaded yet</p>
+        </div>
+        <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
